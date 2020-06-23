@@ -85,11 +85,6 @@ class  Home extends React.Component {
                   top: "0px",
                   bottom: "0px",
                   left: `${selectedIndex * 32}px`,
-                  alignContenta
-                  a
-                  alignContentaa
-                  alignContentaa
-                  a
                 }}
               />
               
