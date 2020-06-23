@@ -1,11 +1,11 @@
-import React from "react";
+import React, { Component } from "react";
 import "./index.css";
 import Button from "../Button";
 import Modal from "../Modal";
 
 const CODE_LENGTH = new Array(9).fill(0);
 
-class Home extends React.Component {
+class Home extends Component {
   state = {
     value: "",
     focused: false,
@@ -38,10 +38,12 @@ class Home extends React.Component {
   // Modal window
   // ------------------------------------------------
 
-  showModal = (e) => {
-    this.setState({
-      show: true,
-    });
+  showModal = () => {
+    this.setState({ show: true });
+  };
+
+  hideModal = () => {
+    this.setState({ show: false });
   };
 
   // Handel Delete
@@ -56,7 +58,7 @@ class Home extends React.Component {
       });
     }
   };
-  
+
 
   render() {
     const { value, focused } = this.state;
@@ -88,7 +90,7 @@ class Home extends React.Component {
         continue;
       }
 
-      console.log("Optimal jumps quantity " + curStep);
+      return(curStep);
     };
 
     jump(values);
@@ -116,9 +118,9 @@ class Home extends React.Component {
             />
           </div>
           <Button
-            onClick={(e) => {
-              this.showModal();
-            }}
+            onClick={
+              this.showModal
+            }
             title="Check"
           />
         </div>
@@ -126,7 +128,11 @@ class Home extends React.Component {
         {/* Effort to show result in Modal container. Needs investigations.
         ------------------------------------------------ */}
 
-        <Modal show={this.state.show}>Message in Modal</Modal>
+        <Modal show={this.state.show} handleClose={this.hideModal}>
+          <p>{this.curStep}</p>
+          <p>Data</p>
+        </Modal>
+        {/* <Button onClick={this.showModal}></Button> */}
 
         {/* ------------------------------------------------- */}
       </React.Fragment>
