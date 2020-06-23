@@ -8,10 +8,11 @@
     text-align: center;
     border-radius: 4px;
     padding: 0.7rem 2.0625rem;
-    background-color: #e50914;
+    background-color: #2b2727;
     color: #e5e5e5;
     border: none;
     cursor: pointer;
+    margin-top: 20px;
   }
   .Big-btn:focus {
     outline: none;

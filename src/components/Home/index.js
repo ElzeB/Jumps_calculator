@@ -1,97 +1,137 @@
 import React from "react";
 import "./index.css";
 import Button from "../Button";
+import Modal from "../Modal";
 
 const CODE_LENGTH = new Array(9).fill(0);
 
-class  Home extends React.Component {
-    
-    state = {
-        value: "",
-        focused: false,
+class Home extends React.Component {
+  state = {
+    value: "",
+    focused: false,
+    show: false,
+  };
+
+  input = React.createRef();
+
+  handleClick = () => {
+    this.input.current.focus();
+  };
+  handleFocus = () => {
+    this.setState({ focused: true });
+  };
+
+  // Handel Typing
+  // ------------------------------------------------
+
+  handleChange = (e) => {
+    const value = e.target.value;
+
+    this.setState((state) => {
+      if (state.value.length >= CODE_LENGTH.length) return null;
+      return {
+        value: state.value + value,
       };
+    });
+  };
 
-    input = React.createRef();
+  // Modal window
+  // ------------------------------------------------
 
-    handleClick = () => {
-        this.input.current.focus();
-      };
-      handleFocus = () => {
-        this.setState({ focused: true });
-      };
-      handleBlur = () => {
-        this.setState({
-          focused: false,
-        });
-      };
+  showModal = (e) => {
+    this.setState({
+      show: true,
+    });
+  };
 
-      handleChange = e => {
-        const value = e.target.value;
-      
-        this.setState(state => {
-          if (state.value.length >= CODE_LENGTH.length) return null;
-          return {
-            value: (state.value + value),
-          };
-        });
-      };
+  // Handel Delete
+  // ------------------------------------------------
 
-      render() {
-    
-        const { value, focused } = this.state;
-        const values = [];
-        value.split("").forEach(function(e){values.push(parseInt(e))});
-        const selectedIndex = values.length < CODE_LENGTH.length ? values.length : CODE_LENGTH.length - 1;
-        console.log(values);
+  handleKeyUp = (e) => {
+    if (e.key === "Backspace") {
+      this.setState((state) => {
+        return {
+          value: state.value.slice(0, state.value.length - 1),
+        };
+      });
+    }
+  };
+  
 
-        let jump = function(values) {
-            let n = values.length;
-            if(n<2) {
-              return 0;
-            }
-            
-            let maxPosCanReach = values[0];
-            let curStep=1;
-            let maxPosCanReachWithCurSteps=values[0];
-            for(let i=1; i<n; i++) {
-              if(maxPosCanReachWithCurSteps<i) {
-                curStep++;
-                maxPosCanReachWithCurSteps = maxPosCanReach;
-              }
-              
-              maxPosCanReach = Math.max(maxPosCanReach, i+values[i]);
-            }
-            console.log(curStep);
-            
-          }  
-        
-          jump(values);
+  render() {
+    const { value, focused } = this.state;
+    const values = [];
+    value.split("").forEach(function (e) {
+      values.push(parseInt(e));
+    });
+    const selectedIndex =
+      values.length < CODE_LENGTH.length
+        ? values.length
+        : CODE_LENGTH.length - 1;
+    // console.log(values);
 
-        return (
-          <div className="App">
-            <div className="wrap" onClick={this.handleClick}>
-              {CODE_LENGTH.map((v, index) => {
-                return <div className="display">{values[index]}</div>;
-              })}
-              <input
-                value=""
-                ref={this.input}
-                onChange={this.handleChange}
-                onFocus={this.handleFocus}
-                onBlur={this.handleBlur}
-                className="input"
-                style={{
-                  width: "32px",
-                  top: "0px",
-                  bottom: "0px",
-                  left: `${selectedIndex * 32}px`,
-                }}
-              />
-              
-            </div>
-          </div>
-        );
+    let jump = function (values) {
+      let n = values.length;
+      if (n < 2) {
+        return 0;
       }
+
+      let maxPosCanReach = values[0];
+      let curStep = 1;
+      let maxPosCanReachWithCurSteps = values[0];
+      for (let i = 1; i < n; i++) {
+        if (maxPosCanReachWithCurSteps < i) {
+          curStep++;
+          maxPosCanReachWithCurSteps = maxPosCanReach;
+        }
+        maxPosCanReach = Math.max(maxPosCanReach, i + values[i]);
+        continue;
+      }
+
+      console.log("Optimal jumps quantity " + curStep);
+    };
+
+    jump(values);
+
+    return (
+      <React.Fragment>
+        <div className="App">
+          <div className="wrap" onClick={this.handleClick}>
+            {CODE_LENGTH.map((v, index) => {
+              return <div className="display">{values[index]}</div>;
+            })}
+            <input
+              value=""
+              ref={this.input}
+              onChange={this.handleChange}
+              onKeyUp={this.handleKeyUp}
+              onFocus={this.handleFocus}
+              className="input"
+              style={{
+                width: "32px",
+                top: "0px",
+                bottom: "0px",
+                left: `${selectedIndex * 32}px`,
+              }}
+            />
+          </div>
+          <Button
+            onClick={(e) => {
+              this.showModal();
+            }}
+            title="Check"
+          />
+        </div>
+
+        {/* Effort to show result in Modal container. Needs investigations.
+        ------------------------------------------------ */}
+
+        <Modal show={this.state.show}>Message in Modal</Modal>
+
+        {/* ------------------------------------------------- */}
+      </React.Fragment>
+    );
+  }
 }
 
 export default Home;
