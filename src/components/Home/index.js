@@ -90,7 +90,7 @@ class Home extends Component {
         continue;
       }
 
-      return(curStep);
+      console.log(curStep);
     };
 
     jump(values);
