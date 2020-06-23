@@ -1,0 +1,18 @@
+.Big-btn {
+    right: 0;
+    font-weight: 400;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 16px;
+    line-height: 19px;
+    text-align: center;
+    border-radius: 4px;
+    padding: 0.7rem 2.0625rem;
+    background-color: #e50914;
+    color: #e5e5e5;
+    border: none;
+    cursor: pointer;
+  }
+  .Big-btn:focus {
+    outline: none;
+  }
